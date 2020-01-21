@@ -8,4 +8,4 @@ Edit `build_go.rb`, change the version numbers and download sha and push to gith
 
 The travis pipeline will then build go packages for Bionic and Xenial.
 
-To create the package locally, run `make packages`.
+To create the packages locally, run `make packages`.
