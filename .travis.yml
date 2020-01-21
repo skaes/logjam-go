@@ -16,6 +16,8 @@ before_install:
 jobs:
   include:
     - script:
+        - docker pull ubuntu:bionic
         - make package-bionic publish-bionic
     - script:
+        - docker pull ubuntu:xenial
         - make package-xenial publish-xenial
