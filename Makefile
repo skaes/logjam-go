@@ -25,17 +25,21 @@ LOGJAM_PACKAGE_USER:=uploader
 .PHONY: publish publish-bionic publish-xenial
 publish: publish-bionic publish-xenial
 
-define tmpdir
-$(shell ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) mktemp -d)
-endef
+VERSION:=$(shell cat VERSION)
+PACKAGE_NAME:=logjam-go_$(VERSION)_amd64.deb
 
 define upload-package
-  rsync -vrlptDz -e "ssh -l $(LOGJAM_PACKAGE_USER)" packages/ubuntu/$(1)/* $(LOGJAM_PACKAGE_HOST):$(2)
-  ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) /usr/local/bin/add-new-debian-packages $(1) $(2)
+@if ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) debian-package-exists $(1) $(2); then\
+  echo package $(2) already exists on the server;\
+else\
+  tmpdir=`ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) mktemp -d` &&\
+  rsync -vrlptDz -e "ssh -l $(LOGJAM_PACKAGE_USER)" packages/ubuntu/$(1)/* $(LOGJAM_PACKAGE_HOST):$$tmpdir &&\
+  ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) add-new-debian-packages $(1) $$tmpdir;\
+fi
 endef
 
 publish-bionic:
-	$(call upload-package,bionic,$(call tmpdir))
+	$(call upload-package,bionic,$(PACKAGE_NAME))
 
 publish-xenial:
-	$(call upload-package,xenial,$(call tmpdir))
+	$(call upload-package,xenial,$(PACKAGE_NAME))
