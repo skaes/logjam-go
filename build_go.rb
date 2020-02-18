@@ -7,7 +7,7 @@ iteration i
 vendor "skaes@railsexpress.de"
 
 source "https://golang.org/dl/go#{version}.linux-amd64.tar.gz",
-       checksum: "a1bc06deb070155c4f67c579f896a45eeda5a8fa54f35ba233304074c4abbbbd"
+       checksum: "0567734d558aef19112f2b2873caa0c600f1b4a5827930eb5a7f35235219e9d8"
 
 run "mv", "go", "/usr/local"
 run "ln", "-s", "/usr/local/go/bin/go", "/usr/local/bin/go"
