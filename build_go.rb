@@ -1,13 +1,15 @@
 name "logjam-go"
 
-v, i = File.read(File.expand_path(__dir__)+"/VERSION").chomp.split('-')
+version_info = YAML::load_file(File.expand_path(__dir__)+"/version.yml")
+package_version, checksum = version_info.values_at(*%w(package checksum))
+
+v, i = package_version.split('-')
 version v
 iteration i
 
 vendor "skaes@railsexpress.de"
 
-source "https://golang.org/dl/go#{version}.linux-amd64.tar.gz",
-       checksum: "5c566ddc2e0bcfc25c26a5dc44a440fcc0177f7350c1f01952b34d5989a0d287"
+source "https://golang.org/dl/go#{version}.linux-amd64.tar.gz", checksum: checksum
 
 run "mv", "go", "/usr/local"
 run "ln", "-s", "/usr/local/go/bin/go", "/usr/local/bin/go"

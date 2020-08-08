@@ -27,7 +27,7 @@ LOGJAM_PACKAGE_USER:=uploader
 .PHONY: publish publish-bionic publish-xenial
 publish: publish-bionic publish-xenial
 
-VERSION:=$(shell cat VERSION)
+VERSION:=$(shell awk '/package:/ {print $$2};' version.yml)
 PACKAGE_NAME:=logjam-go_$(VERSION)_amd64.deb
 
 define upload-package
