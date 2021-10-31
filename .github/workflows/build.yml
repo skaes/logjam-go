@@ -31,3 +31,21 @@ jobs:
 
       - name: Build package
         run: make package-${{ matrix.os }}
+
+      - name: Setup SSH credentials
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/railsexpress.key
+          chmod 600 ~/.ssh/railsexpress.key
+          cat >>~/.ssh/config <<END
+          Host railsexpress.de
+            HostName railsexpress.de
+            User uploader
+            IdentityFile ~/.ssh/railsexpress.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_KEY: ${{ secrets.RAILSEXPRESS_SSH_KEY }}
+
+      - name: Upload the package
+        run: make publish-${{ matrix.os }}
