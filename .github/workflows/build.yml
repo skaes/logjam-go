@@ -49,3 +49,4 @@ jobs:
 
       - name: Upload the package
         run: make publish-${{ matrix.os }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
