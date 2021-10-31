@@ -24,7 +24,7 @@ jobs:
           ruby-version: "2.6.8"
 
       - name: Pull base image
-        run: docker pull ${{ matrix.os }}
+        run: docker pull ubuntu:${{ matrix.os }}
 
       - name: Install gems
         run: bundle install
