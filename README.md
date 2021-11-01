@@ -8,7 +8,7 @@ Just some code to create install-able go packages for the logjam build pipeline.
 
 Edit file `versions.yml`, change the version number the download SHA and push to Github.
 
-The travis pipeline will then build go packages for Bionic and Xenial and upload them to
-railsexpress.de.
+The GitHub Actions pipeline will then build go packages for Focal, Bionic and Xenial and
+upload them to [railsexpress.de](https://railsexpress.de/packages/ubuntu/).
 
 To create the packages locally, run `make packages`.
