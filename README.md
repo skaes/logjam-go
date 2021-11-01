@@ -2,6 +2,8 @@
 
 Just some code to create install-able go packages for the logjam build pipeline.
 
+[![build](https://github.com/skaes/logjam-go/actions/workflows/build.yml/badge.svg)](https://github.com/skaes/logjam-go/actions/workflows/build.yml)
+
 ## Usage
 
 Edit file `versions.yml`, change the version number the download SHA and push to Github.
