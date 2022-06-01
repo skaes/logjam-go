@@ -12,7 +12,7 @@ PACKAGES:=package-bionic package-xenial package-focal
 packages: $(PACKAGES)
 
 define build-package
-  RUBYOPT='-W0' bundle exec fpm-fry cook --update=always ubuntu:$(1) build_go.rb
+  RUBYOPT='-W0' bundle exec fpm-fry cook --debug --update=always ubuntu:$(1) build_go.rb
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
