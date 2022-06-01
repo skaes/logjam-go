@@ -11,15 +11,17 @@ PACKAGES:=package-bionic package-xenial package-focal
 
 packages: $(PACKAGES)
 
+define build-package
+  RUBYOPT='-W0' bundle exec fpm-fry cook --update=always ubuntu:$(1) build_go.rb
+  mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
+endef
+
 package-focal:
-	LOGJAM_PREFIX=/opt/logjam bundle exec fpm-fry cook --update=always ubuntu:focal build_go.rb
-	mkdir -p packages/ubuntu/focal && mv *.deb packages/ubuntu/focal
+	$(call build-package,focal)
 package-bionic:
-	LOGJAM_PREFIX=/opt/logjam bundle exec fpm-fry cook --update=always ubuntu:bionic build_go.rb
-	mkdir -p packages/ubuntu/bionic && mv *.deb packages/ubuntu/bionic
+	$(call build-package,bionic)
 package-xenial:
-	LOGJAM_PREFIX=/opt/logjam bundle exec fpm-fry cook --update=always ubuntu:xenial build_go.rb
-	mkdir -p packages/ubuntu/xenial && mv *.deb packages/ubuntu/xenial
+	$(call build-package,xenial)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
