@@ -16,11 +16,11 @@ define build-package
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-focal: passenger.load
+package-focal:
 	$(call build-package,focal)
-package-bionic: passenger.load
+package-bionic:
 	$(call build-package,bionic)
-package-xenial: passenger.load
+package-xenial:
 	$(call build-package,xenial)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
