@@ -11,14 +11,8 @@ vendor "skaes@railsexpress.de"
 
 source "https://golang.org/dl/go#{version}.linux-amd64.tar.gz", checksum: checksum
 
-run "pwd"
-run "ls", "-al"
-run "mkdir", "-p", "/usr/local/go"
-run "mv", "./*", "/usr/local/go"
-run "pwd"
+bash "mkdir -p /usr/local/go"
+bash "mv * /usr/local/go"
 run "ln", "-s", "/usr/local/go/bin/go", "/usr/local/bin/go"
-run "pwd"
 run "ln", "-s", "/usr/local/go/bin/godoc", "/usr/local/bin/godoc"
-run "pwd"
 run "ln", "-s", "/usr/local/go/bin/gofmt", "/usr/local/bin/gofmt"
-run "pwd"
