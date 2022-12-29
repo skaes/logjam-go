@@ -6,7 +6,7 @@ clean:
 	docker ps -a | awk '/Exited/ {print $$1;}' | xargs docker rm
 	docker images | awk '/none|fpm-(fry|dockery)/ {print $$3;}' | xargs docker rmi
 
-PACKAGES:=package-bionic package-xenial package-focal
+PACKAGES:=package-bionic package-focal package-jammy
 .PHONY: packages $(PACKAGES)
 
 packages: $(PACKAGES)
@@ -16,18 +16,18 @@ define build-package
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-focal:
-	$(call build-package,focal)
 package-bionic:
 	$(call build-package,bionic)
-package-xenial:
-	$(call build-package,xenial)
+package-focal:
+	$(call build-package,focal)
+package-jammy:
+	$(call build-package,jammy)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-bionic publish-xenial
-publish: publish-bionic publish-xenial
+.PHONY: publish publish-bionic publish-focal publish-jammy
+publish: publish-bionic publish-focal publish-jammy
 
 VERSION:=$(shell awk '/package:/ {print $$2};' version.yml)
 PACKAGE_NAME:=logjam-go_$(VERSION)_amd64.deb
@@ -42,11 +42,12 @@ else\
 fi
 endef
 
-publish-focal:
-	$(call upload-package,focal,$(PACKAGE_NAME))
 
 publish-bionic:
 	$(call upload-package,bionic,$(PACKAGE_NAME))
 
-publish-xenial:
-	$(call upload-package,xenial,$(PACKAGE_NAME))
+publish-focal:
+	$(call upload-package,focal,$(PACKAGE_NAME))
+
+publish-jammy:
+	$(call upload-package,jammy,$(PACKAGE_NAME))
