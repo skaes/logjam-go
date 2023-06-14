@@ -9,7 +9,9 @@ iteration i
 
 vendor "skaes@railsexpress.de"
 
-source "https://golang.org/dl/go#{version}.linux-amd64.tar.gz", checksum: checksum
+arch = RUBY_PLATFORM.split("-").first.sub('aarch64', 'arm64').sub('x86_64', 'amd64')
+
+source "https://golang.org/dl/go#{version}.linux-#{arch}.tar.gz", checksum: checksum[arch]
 
 bash "mkdir -p /usr/local/go"
 bash "mv * /usr/local/go"
