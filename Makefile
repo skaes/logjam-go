@@ -6,8 +6,8 @@ clean:
 	docker ps -a | awk '/Exited/ {print $$1;}' | xargs docker rm
 	docker images | awk '/none|fpm-(fry|dockery)/ {print $$3;}' | xargs docker rmi
 
-PACKAGES:=package-bionic package-focal package-jammy
-.PHONY: packages $(PACKAGES) pull pull-jammy pull-focal pull-bionic
+PACKAGES:=package-focal package-jammy
+.PHONY: packages $(PACKAGES) pull pull-jammy pull-focal
 
 ARCH := amd64
 
@@ -21,22 +21,18 @@ endif
 
 packages: $(PACKAGES)
 
-pull: pull-jammy pull-focal pull-bionic
+pull: pull-jammy pull-focal
 
 pull-jammy:
 	docker pull $(LIBARCH)ubuntu:jammy
 pull-focal:
 	docker pull $(LIBARCH)ubuntu:focal
-pull-bionic:
-	docker pull $(LIBARCH)ubuntu:bionic
 
 define build-package
   RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1) build_go.rb
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-bionic:
-	$(call build-package,bionic)
 package-focal:
 	$(call build-package,focal)
 package-jammy:
@@ -45,8 +41,8 @@ package-jammy:
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-bionic publish-focal publish-jammy
-publish: publish-bionic publish-focal publish-jammy
+.PHONY: publish publish-focal publish-jammy
+publish: publish-focal publish-jammy
 
 VERSION:=$(shell awk '/package:/ {print $$2};' version.yml)
 PACKAGE_NAME:=logjam-go_$(VERSION)_$(ARCH).deb
@@ -61,9 +57,6 @@ else\
 fi
 endef
 
-
-publish-bionic:
-	$(call upload-package,bionic,$(PACKAGE_NAME))
 
 publish-focal:
 	$(call upload-package,focal,$(PACKAGE_NAME))
