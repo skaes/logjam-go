@@ -17,7 +17,7 @@ jobs:
         arch: ["amd64", "arm64"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
@@ -25,7 +25,7 @@ jobs:
           ruby-version: "3.2.2"
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Pull base image
         run: make pull-${{ matrix.os }} ARCH=${{ matrix.arch }}
