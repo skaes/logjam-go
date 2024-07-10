@@ -6,8 +6,8 @@ clean:
 	docker ps -a | awk '/Exited/ {print $$1;}' | xargs docker rm
 	docker images | awk '/none|fpm-(fry|dockery)/ {print $$3;}' | xargs docker rmi
 
-PACKAGES:=package-focal package-jammy
-.PHONY: packages $(PACKAGES) pull pull-jammy pull-focal
+PACKAGES:=package-noble package-jammy package-focal
+.PHONY: packages $(PACKAGES) pull pull-noble pull-jammy pull-focal
 
 ARCH := amd64
 
@@ -21,8 +21,10 @@ endif
 
 packages: $(PACKAGES)
 
-pull: pull-jammy pull-focal
+pull: pull-noble pull-jammy pull-focal
 
+pull-noble:
+	docker pull $(LIBARCH)ubuntu:noble
 pull-jammy:
 	docker pull $(LIBARCH)ubuntu:jammy
 pull-focal:
@@ -33,16 +35,18 @@ define build-package
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-focal:
-	$(call build-package,focal)
+package-noble:
+	$(call build-package,noble)
 package-jammy:
 	$(call build-package,jammy)
+package-focal:
+	$(call build-package,focal)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-focal publish-jammy
-publish: publish-focal publish-jammy
+.PHONY: publish publish-noble publish-jammy publish-focal
+publish: publish-noble publish-jammy publish-focal
 
 VERSION:=$(shell awk '/package:/ {print $$2};' version.yml)
 PACKAGE_NAME:=logjam-go_$(VERSION)_$(ARCH).deb
@@ -57,9 +61,9 @@ else\
 fi
 endef
 
-
-publish-focal:
-	$(call upload-package,focal,$(PACKAGE_NAME))
-
+publish-noble:
+	$(call upload-package,noble,$(PACKAGE_NAME))
 publish-jammy:
 	$(call upload-package,jammy,$(PACKAGE_NAME))
+publish-focal:
+	$(call upload-package,focal,$(PACKAGE_NAME))
