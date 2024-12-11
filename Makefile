@@ -24,11 +24,11 @@ packages: $(PACKAGES)
 pull: pull-noble pull-jammy pull-focal
 
 pull-noble:
-	docker pull $(LIBARCH)ubuntu:noble
+	docker pull $(PLATFORM) $(LIBARCH)ubuntu:noble
 pull-jammy:
-	docker pull $(LIBARCH)ubuntu:jammy
+	docker pull $(PLATFORM) $(LIBARCH)ubuntu:jammy
 pull-focal:
-	docker pull $(LIBARCH)ubuntu:focal
+	docker pull $(PLATFORM) $(LIBARCH)ubuntu:focal
 
 define build-package
   RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1)
