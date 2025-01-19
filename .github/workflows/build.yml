@@ -30,8 +30,8 @@ jobs:
         with:
           ruby-version: "3.3.6"
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+#      - name: Set up QEMU
+#        uses: docker/setup-qemu-action@v3
 
       - name: Pull base image
         run: make pull-${{ matrix.os }} ARCH=${{ matrix.arch }}
