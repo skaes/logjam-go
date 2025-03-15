@@ -31,7 +31,7 @@ pull-focal:
 	docker pull $(PLATFORM) $(LIBARCH)ubuntu:focal
 
 define build-package
-  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1)
+  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --pull --update=always $(LIBARCH)ubuntu:$(1)
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
