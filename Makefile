@@ -69,7 +69,7 @@ publish-focal:
 	$(call upload-package,focal,$(PACKAGE_NAME))
 
 
-.PHONY: tag release
+.PHONY: tag release unrelease
 
 TAG := v$(shell awk '/package:/ {print $$2}' version.yml)
 
@@ -77,4 +77,8 @@ tag:
 	git tag -f $(TAG)
 
 release: tag
-	git push origin -f $(TAG)
+	git push -f origin HEAD refs/tags/$(TAG)
+
+unrelease:
+	git tag -d $(TAG)
+	git push origin --delete $(TAG)
