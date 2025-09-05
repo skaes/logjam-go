@@ -29,7 +29,7 @@ jobs:
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.8"
+          ruby-version: "3.3.9"
 
       - name: Install gems
         run: bundle install
